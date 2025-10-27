@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Favoris - Chitir Chicken</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: url("images/back.png") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ✅ Barre de navigation (identique à bucket) */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      background: linear-gradient(90deg, #ff3b30, #ff9500);
+      box-shadow: 0 4px 20px rgba(255, 69, 0, 0.4);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    nav .logo-section img {
+      height: 55px;
+      width: 55px;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+
+    nav .logo-section h1 {
+      color: white;
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 10px rgba(0,0,0,0.6);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      position: relative;
+    }
+
+    nav ul li a {
+      display: inline-block;
+      padding: 15px 20px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 750;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    }
+
+    nav ul li a:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .counter {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: #ff3b30;
+      color: #fff;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* ✅ Contenu principal */
+    .content {
+      margin-top: 130px;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .btn-style {
+      background: linear-gradient(135deg, #ff3b30, #ff9500);
+      color: #fff;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-style:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255,165,0,0.6);
+    }
+
+    .favori-item {
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      border-radius: 15px;
+      padding: 15px 20px;
+      margin: 15px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 700px;
+    }
+
+    .favori-item h3 {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .favori-item p {
+      color: #ff3b30;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Navigation (même que bucket.html) -->
+  <nav>
+    <div class="logo-section">
+      <img src="images/logo.png" alt="Chitir Chicken Logo">
+      <h1>Chitir Chicken</h1>
+    </div>
+
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li class="relative">
+        <a href="panier.html">Panier</a>
+        <span id="cart-count" class="counter">0</span>
+      </li>
+      <li class="relative">
+        <a href="favoris.html">Favoris</a>
+        <span id="fav-count" class="counter">0</span>
+      </li>
+      <li><a href="localisation.html">Localisation</a></li>
+      <li><a href="contact.html"></a>
+    </ul>
+  </nav>
+
+  <!-- ❤️ Contenu Favoris -->
+  <section class="content">
+    <h2 class="text-4xl font-extrabold mb-8 text-orange-400">❤️ Vos Favoris</h2>
+
+    <div id="favoris-container" class="max-w-3xl mx-auto"></div>
+
+    <button id="vider-fav" class="btn-style mt-10">🧹 Vider les favoris</button>
+  </section>
+
+  <!-- ✅ Script JS -->
+  <script>
+    // 🔢 Met à jour les compteurs
+    function majCompteurs() {
+      const panier = JSON.parse(localStorage.getItem("panier")) || [];
+      const favoris = JSON.parse(localStorage.getItem("favoris")) || [];
+      document.getElementById("cart-count").textContent = panier.length;
+      document.getElementById("fav-count").textContent = favoris.length;
+    }
+
+    // ❤️ Affiche les favoris (sans image)
+    function afficherFavoris() {
+      const favoris = JSON.parse(localStorage.getItem('favoris')) || [];
+      const container = document.getElementById('favoris-container');
+      container.innerHTML = '';
+
+      if (favoris.length === 0) {
+        container.innerHTML = `
+          <div style="background:rgba(0,0,0,0.4); color:white; padding:20px; border-radius:15px;">
+            <p style="font-size:1.3rem;">😢 Aucun favori</p>
+            <p>Ajoutez vos plats préférés pour les retrouver facilement 🍗</p>
+          </div>`;
+        majCompteurs();
+        return;
+      }
+
+      favoris.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.className = 'favori-item';
+        div.innerHTML = `
+          <div>
+            <h3>${item.nom}</h3>
+            <p>${(item.prix || 0).toLocaleString()} FCFA</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button onclick="ajouterAuPanierDepuisFavori(${i})" class="btn-style">🛒 Ajouter</button>
+            <button onclick="supprimerFavori(${i})" class="btn-style" style="background:linear-gradient(135deg,#ff3b30,#d00000);">🗑 Supprimer</button>
+          </div>`;
+        container.appendChild(div);
+      });
+
+      majCompteurs();
+    }
+
+    // ➕ Ajouter au panier depuis favoris
+    function ajouterAuPanierDepuisFavori(index) {
+      const favoris = JSON.parse(localStorage.getItem('favoris')) || [];
+      const panier = JSON.parse(localStorage.getItem('panier')) || [];
+      const article = favoris[index];
+      if (!article) return;
+
+      const existe = panier.find(p => p.nom === article.nom);
+      if (existe) {
+        existe.quantite = (existe.quantite || 1) + 1;
+      } else {
+        panier.push({ ...article, quantite: 1 });
+      }
+
+      localStorage.setItem('panier', JSON.stringify(panier));
+      majCompteurs();
+      alert(`✅ ${article.nom} ajouté au panier !`);
+    }
+
+    // ❌ Supprimer un favori
+    function supprimerFavori(index) {
+      let favoris = JSON.parse(localStorage.getItem('favoris')) || [];
+      favoris.splice(index, 1);
+      localStorage.setItem('favoris', JSON.stringify(favoris));
+      afficherFavoris();
+    }
+
+    // 🧹 Vider les favoris
+    document.getElementById('vider-fav').addEventListener('click', () => {
+      localStorage.removeItem('favoris');
+      afficherFavoris();
+    });
+
+    // 🚀 Initialisation
+    document.addEventListener("DOMContentLoaded", () => {
+      afficherFavoris();
+      majCompteurs();
+    });
+  </script>
+</body>
+</html>

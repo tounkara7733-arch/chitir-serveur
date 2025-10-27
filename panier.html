@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mon Panier - Chitir Chicken</title>
+  <style>
+    /* ✅ Style général cohérent avec bucket.html */
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: url("images/back.png") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    /* ✅ Barre de navigation identique */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      background: linear-gradient(90deg, #ff3b30, #ff9500);
+      box-shadow: 0 4px 20px rgba(255, 69, 0, 0.4);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    nav .logo-section img {
+      height: 55px;
+      width: 55px;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+
+    nav .logo-section h1 {
+      color: white;
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 10px rgba(0,0,0,0.6);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      position: relative;
+    }
+
+    nav ul li a {
+      display: inline-block;
+      padding: 15px 20px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 750;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    }
+
+    nav ul li a:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .counter {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: #ff3b30;
+      color: #fff;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* ✅ Contenu principal */
+    main {
+      padding-top: 120px;
+      text-align: center;
+      color: #fff;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+    }
+
+    .panier-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: rgba(0,0,0,0.6);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    .panier-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .panier-item h4 {
+      margin: 0;
+      font-size: 18px;
+      color: orange;
+    }
+
+    .panier-item p {
+      margin: 5px 0 0;
+      font-size: 14px;
+    }
+
+    .panier-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panier-actions button {
+      background: linear-gradient(90deg, red, orange);
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: bold;
+    }
+
+    .panier-actions button:hover {
+      transform: scale(1.1);
+    }
+
+    .total {
+      margin-top: 25px;
+      font-size: 22px;
+      font-weight: bold;
+      color: orange;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
+    }
+
+    .actions-globales {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .actions-globales button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, red, orange);
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    }
+
+    .actions-globales button:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Barre de navigation identique -->
+  <nav>
+    <div class="logo-section">
+      <img src="images/logo.png" alt="Chitir Chicken Logo">
+      <h1>Chitir Chicken</h1>
+    </div>
+
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+
+      <li class="relative">
+        <a href="panier.html">Panier</a>
+        <span id="cart-count" class="counter">0</span>
+      </li>
+
+      <li class="relative">
+        <a href="favoris.html">Favoris</a>
+        <span id="fav-count" class="counter">0</span>
+      </li>
+
+      <li><a href="localisation.html">Localisation</a></li>
+      <li><a href="bucket.html">Menus</a></li>
+      <li><a href="contact.html"></a>
+    </ul>
+  </nav>
+
+  <!-- ✅ Contenu principal -->
+  <main>
+    <h2>🛒 Votre Panier</h2>
+
+    <div class="panier-container" id="panier-container">
+      <!-- Les articles du panier s’afficheront ici -->
+    </div>
+
+    <div class="total">
+      Total : <span id="total-panier">0 FCFA</span>
+    </div>
+
+    <div class="actions-globales">
+      <button onclick="viderPanier()">🧹 Vider le panier</button>
+     <button onclick="envoyerCommande()" class="btn-style text-white py-3 px-8 rounded-full text-lg">
+  💳 Passer la commande
+</button>
+    </div>
+  </main>
+
+  <script>
+    // 🔁 Met à jour les compteurs panier & favoris depuis le localStorage
+    function majCompteurs() {
+      const panier = JSON.parse(localStorage.getItem("panier")) || [];
+      const favoris = JSON.parse(localStorage.getItem("favoris")) || [];
+
+      document.getElementById("cart-count").textContent = panier.length;
+      document.getElementById("fav-count").textContent = favoris.length;
+    }
+
+    // 🔁 Affiche les produits du panier
+    function afficherPanier() {
+      const panier = JSON.parse(localStorage.getItem("panier")) || [];
+      const container = document.getElementById("panier-container");
+      const totalElem = document.getElementById("total-panier");
+
+      container.innerHTML = "";
+      if (panier.length === 0) {
+        container.innerHTML = "<p>Aucun article dans votre panier 😔</p>";
+        totalElem.textContent = "0 FCFA";
+        majCompteurs();
+        return;
+      }
+
+      let total = 0;
+      panier.forEach((item, i) => {
+        const sousTotal = item.prix * item.quantite;
+        total += sousTotal;
+
+        const div = document.createElement("div");
+        div.classList.add("panier-item");
+        div.innerHTML = `
+          <div>
+            <h4>${item.nom}</h4>
+            <p>${item.prix.toLocaleString()} FCFA / unité</p>
+          </div>
+          <div class="panier-actions">
+            <button onclick="changerQuantite(${i}, -1)">−</button>
+            <span>${item.quantite}</span>
+            <button onclick="changerQuantite(${i}, 1)">+</button>
+            <button onclick="supprimerArticle(${i})">🗑</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      totalElem.textContent = total.toLocaleString() + " FCFA";
+      majCompteurs();
+    }
+
+    function changerQuantite(index, delta) {
+      let panier = JSON.parse(localStorage.getItem("panier")) || [];
+      if (!panier[index]) return;
+
+      panier[index].quantite += delta;
+      if (panier[index].quantite <= 0) panier.splice(index, 1);
+
+      localStorage.setItem("panier", JSON.stringify(panier));
+      afficherPanier();
+    }
+
+    function supprimerArticle(index) {
+      let panier = JSON.parse(localStorage.getItem("panier")) || [];
+      panier.splice(index, 1);
+      localStorage.setItem("panier", JSON.stringify(panier));
+      afficherPanier();
+    }
+
+    function viderPanier() {
+      localStorage.removeItem("panier");
+      afficherPanier();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      afficherPanier();
+      majCompteurs();
+    });
+  </script>
+
+  <script>
+async function envoyerCommande() {
+  const nom = prompt("Entrez votre nom :");
+  const telephone = prompt("Entrez votre numéro de téléphone :");
+
+  // On récupère le panier stocké dans le navigateur
+  const panier = JSON.parse(localStorage.getItem("panier")) || [];
+
+  if (panier.length === 0) {
+    alert("Votre panier est vide !");
+    return;
+  }
+
+  // On calcule le total et la liste d'articles
+  const total = panier.reduce((acc, item) => acc + item.prix, 0);
+  const items = panier.map(item => item.nom).join(", ");
+
+  // Envoi vers le serveur
+  const response = await fetch("http://localhost:4000/api/orders", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      customer_name: nom,
+      customer_phone: telephone,
+      items,
+      total
+    })
+  });
+
+  const data = await response.json();
+
+  if (data.success) {
+    alert("✅ Commande envoyée avec succès !");
+    localStorage.removeItem("panier"); // on vide le panier
+    window.location.href = "index.html"; // redirection vers l’accueil
+  } else {
+    alert("❌ Erreur lors de l’envoi de la commande !");
+  }
+}
+</script>
+
+</body>
+</html>

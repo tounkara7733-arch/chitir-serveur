@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nos Menus - Chitir Chicken</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: url('images/back.png') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 40px;
+      background: rgba(255, 69, 0, 0.8);
+    }
+
+    header img {
+      height: 60px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: yellow;
+    }
+
+    .slider {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 120px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .slide {
+      min-width: 100%;
+      height: 100%;
+      transition: transform 0.8s ease-in-out;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      position: relative;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 80vh;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .menu-name {
+      text-align: center;
+      font-size: 2rem;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      margin-top: -10px;
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    .btn {
+      background: linear-gradient(90deg, red, orange);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 768px) {
+      .menu-name {
+        font-size: 1.2rem;
+      }
+
+      .btn {
+        padding: 8px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="images/logo.png" alt="Chitir Chicken Logo">
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="panier.html">Panier</a></li>
+        <li><a href="favoris.html">Favoris</a></li>
+        <li><a href="localisation.html">Localisation</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="slider">
+    <div class="slide active">
+      <img src="images/bucket_feast.png" alt="Bucket Feast">
+      <div class="menu-name">Bucket Feast</div>
+    </div>
+
+    <div class="slide">
+      <img src="images/Chicken_lover.png" alt="Chicken Lover">
+      <div class="menu-name">Chicken Lover</div>
+    </div>
+
+    <div class="slide">
+      <img src="images/burger_wraps.png" alt="Burgers & Wraps">
+      <div class="menu-name">Burgers & Wraps</div>
+    </div>
+
+    <div class="slide">
+      <img src="images/drin.png.jpg" alt="Drinks & Glaces">
+      <div class="menu-name">Drinks & Glaces</div>
+    </div>
+
+    <div class="slide">
+      <img src="images/Extras.png" alt="Extras">
+      <div class="menu-name">Extras</div>
+    </div>
+
+    <div class="slide">
+      <img src="images/Top.png" alt="Top Specials">
+      <div class="menu-name">Top Specials</div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="prevBtn">⬅️ Retour</button>
+      <button class="btn" id="nextBtn">Suivant ➡️</button>
+    </div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let index = 0;
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      slides[index].classList.remove('active');
+      index = (index + 1) % slides.length;
+      slides[index].classList.add('active');
+    });
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      slides[index].classList.remove('active');
+      index = (index - 1 + slides.length) % slides.length;
+      slides[index].classList.add('active');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chitir Chicken - Drinks & Glaces</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: url("images/back.png") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    /* ==== Barre de navigation identique à la page d'accueil ==== */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    background: linear-gradient(90deg, #ff3b30, #ff9500);
+    box-shadow: 0 4px 20px rgba(255, 69, 0, 0.4);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+  }
+
+  nav .logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  nav .logo-section img {
+    height: 55px;
+    width: 55px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  }
+
+  nav .logo-section h1 {
+    color: white;
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 10px rgba(0,0,0,0.6);
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav ul li {
+    position: relative;
+  }
+
+  nav ul li a {
+    display: inline-block;
+    padding: 15px 20px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  }
+
+  nav ul li a:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.08);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  }
+
+  .counter {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: #ff3b30;
+    color: #fff;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+
+    nav img { height: 60px; }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+    }
+
+    nav ul li { position: relative; }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover { color: #ffa500; }
+
+    .counter {
+      position: absolute;
+      top: -8px;
+      right: -12px;
+      background: red;
+      color: #fff;
+      border-radius: 50%;
+      padding: 2px 7px;
+      font-size: 12px;
+    }
+
+    .main { text-align: center; padding: 40px 20px; }
+
+    .main img {
+      width: 100%;
+      max-height: 750px;
+      object-fit: contain;
+      border-radius: 20px;
+    }
+
+    .search-bar { margin-top: 20px; position: relative; display: inline-block; }
+
+    .search-bar input {
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: none;
+      width: 250px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .search-bar button {
+      padding: 10px 20px;
+      background: linear-gradient(90deg, red, orange);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .search-bar button:hover { transform: scale(1.05); }
+
+    .search-marker {
+      position: absolute;
+      top: 110%;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid orange;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      color: #fff;
+      font-weight: 600;
+      font-size: 16px;
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-5px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .menu-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 40px;
+      gap: 20px;
+    }
+
+    .menu-item {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 15px;
+      border-radius: 15px;
+      width: 300px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .menu-item:hover { transform: scale(1.05); }
+
+    .menu-item h3 { margin: 10px 0; color: orange; }
+
+    .icons {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .icons button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, red, orange);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .icons button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, orange, red);
+    }
+
+    .icons button.active {
+      background: orange;
+      transform: scale(1.1);
+    }
+
+    .next-btn {
+      margin-top: 40px;
+      padding: 12px 25px;
+      border: none;
+      background: linear-gradient(90deg, red, orange);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .next-btn:hover { transform: scale(1.05); }
+    /* Flèches de navigation */
+.arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, red, orange);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 38px;
+  font-weight: bold;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+  z-index: 10;
+}
+
+.arrow:hover {
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 0 25px rgba(255, 165, 0, 0.8);
+}
+
+.arrow.left {
+  left: 20px;
+}
+
+.arrow.right {
+  right: 20px;
+}
+
+  </style>
+</head>
+<body>
+  
+  <nav>
+  <div class="logo-section">
+    <img src="images/logo.png" alt="Chitir Chicken Logo">
+    <h1>Chitir Chicken</h1>
+  </div>
+
+  <ul>
+    <li><a href="index.html"> Accueil</a></li>
+
+    <li class="relative">
+      <a href="panier.html"> Panier</a>
+      <span id="cart-count" class="counter">0</span>
+    </li>
+
+    <li class="relative">
+      <a href="favoris.html">Favoris</a>
+      <span id="fav-count" class="counter">0</span>
+    </li>
+
+    <li><a href="localisation.html">Localisation</a></li>
+
+    <li><a href="contact.html"></a></li>
+  </ul>
+</nav>
+
+  <div class="main">
+    <img src="images/drin.png.jpg" alt="Drinks & Glaces" />
+    <h1>Drinks & Glaces</h1>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Rechercher un menu...">
+      <button onclick="searchMenu()">Rechercher</button>
+      <div id="searchMarker" class="search-marker"></div>
+    </div>
+
+    <div class="menu-container" id="menuContainer">
+      <div class="menu-item">
+  <h3>Chitir Espresso</h3>
+  <p>Espresso — <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Chitir Espresso', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Chitir Espresso', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Espresso Macchiato</h3>
+  <p>— <strong>2.000 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Espresso Macchiato', 2000)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Espresso Macchiato', 2000)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Café Americano</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Café Americano', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Café Americano', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Café Noir</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Café Noir', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Café Noir', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Café Serré</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Café Serré', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Café Serré', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Café Allongé</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Café Allongé', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Café Allongé', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Cappuccino</h3>
+  <p>— <strong>2.000 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Cappuccino', 2000)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Cappuccino', 2000)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Latte Macchiato</h3>
+  <p>— <strong>2.000 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Latte Macchiato', 2000)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Latte Macchiato', 2000)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Café Latte</h3>
+  <p>— <strong>2.000 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Café Latte', 2000)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Café Latte', 2000)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Flat White</h3>
+  <p>— <strong>2.000 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Flat White', 2000)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Flat White', 2000)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Eau Chaude</h3>
+  <p>— <strong>500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Eau Chaude', 500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Eau Chaude', 500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Lait Chaud</h3>
+  <p>— <strong>1.000 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Lait Chaud', 1000)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Lait Chaud', 1000)">🛒 Panier</button>
+  </div>
+</div>
+
+<!-- Thés glacés & Smoothies -->
+<div class="menu-item">
+  <h3>Thé à la Mangue</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Thé à la Mangue', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Thé à la Mangue', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Thé à l'Ananas</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Thé à l\'Ananas', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Thé à l\'Ananas', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Thé au Raisin</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Thé au Raisin', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Thé au Raisin', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Thé à la Pêche</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Thé à la Pêche', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Thé à la Pêche', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Thé à l'aubépine aux prunes</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Thé à l\'aubépine aux prunes', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Thé à l\'aubépine aux prunes', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Smoothie Mangue</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Smoothie Mangue', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Smoothie Mangue', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Smoothie Ananas</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Smoothie Ananas', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Smoothie Ananas', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Smoothie Raisin</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Smoothie Raisin', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Smoothie Raisin', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Smoothie Pêche</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Smoothie Pêche', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Smoothie Pêche', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+<div class="menu-item">
+  <h3>Aubépine aux prunes</h3>
+  <p>— <strong>1.500 FCFA</strong></p>
+  <div class="icons">
+    <button onclick="ajouterAuxFavoris('Aubépine aux prunes', 1500)">❤️ Favoris</button>
+    <button onclick="ajouterAuPanier('Aubépine aux prunes', 1500)">🛒 Panier</button>
+  </div>
+</div>
+
+  <script>
+    let cartCount = 0;
+    let favCount = 0;
+
+    function addToCart() {
+      cartCount++;
+      document.getElementById("cart-count").innerText = cartCount;
+    }
+
+    function toggleFavorite(btn) {
+      btn.classList.toggle("active");
+      if (btn.classList.contains("active")) {
+        favCount++;
+        btn.innerText = "Retirer Favori";
+      } else {
+        favCount--;
+        btn.innerText = "Favoris";
+      }
+      document.getElementById("fav-count").innerText = favCount;
+    }
+
+    function searchMenu() {
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      const menus = document.querySelectorAll(".menu-item");
+      let found = false;
+
+      menus.forEach(menu => {
+        const name = menu.querySelector("h3").innerText.toLowerCase();
+        if (name.includes(search) && search !== "") { found = true; }
+      });
+
+      const marker = document.getElementById("searchMarker");
+      if (found) {
+        marker.style.display = "block";
+        marker.innerText = "🔍 Résultat trouvé : " + search.charAt(0).toUpperCase() + search.slice(1);
+      } else {
+        marker.style.display = "none";
+      }
+    }
+  </script>
+  <div class="nav-buttons">
+  <div class="arrow left" onclick="window.location.href='chicken-lover.html'">⬅️</div>
+<div class="arrow right" onclick="window.location.href='extras.html'">➡️</div>
+</div>
+<script>
+  // ➕ Ajouter un produit au panier
+  function ajouterAuPanier(nom, prix) {
+    let panier = JSON.parse(localStorage.getItem("panier")) || [];
+    const produit = panier.find(item => item.nom === nom);
+
+    if (produit) {
+      produit.quantite += 1;
+    } else {
+      panier.push({ nom, prix, quantite: 1 });
+    }
+
+    localStorage.setItem("panier", JSON.stringify(panier));
+    alert("✅ " + nom + " ajouté au panier !");
+  }
+
+  // ❤️ Ajouter un produit aux favoris
+  function ajouterAuxFavoris(nom, prix) {
+    let favoris = JSON.parse(localStorage.getItem("favoris")) || [];
+    const existe = favoris.find(item => item.nom === nom);
+
+    if (!existe) {
+      favoris.push({ nom, prix });
+      localStorage.setItem("favoris", JSON.stringify(favoris));
+      alert("❤️ " + nom + " ajouté aux favoris !");
+    } else {
+      alert("⚠️ Ce produit est déjà dans vos favoris !");
+    }
+  }
+</script>
+
+<script>
+  // 🔄 Met à jour les compteurs panier & favoris depuis le localStorage
+  function majCompteurs() {
+    const panier = JSON.parse(localStorage.getItem("panier")) || [];
+    const favoris = JSON.parse(localStorage.getItem("favoris")) || [];
+
+    const panierCount = document.getElementById("cart-count");
+    const favorisCount = document.getElementById("fav-count");
+
+    panierCount.textContent = panier.length;
+    favorisCount.textContent = favoris.length;
+  }
+
+  // 🔁 Mets à jour à chaque chargement
+  document.addEventListener("DOMContentLoaded", majCompteurs);
+
+  // ➕ Quand on ajoute un produit au panier
+  function ajouterAuPanier(nom, prix) {
+    let panier = JSON.parse(localStorage.getItem("panier")) || [];
+    const produit = panier.find(item => item.nom === nom);
+
+    if (produit) {
+      produit.quantite += 1;
+    } else {
+      panier.push({ nom, prix, quantite: 1 });
+    }
+
+    localStorage.setItem("panier", JSON.stringify(panier));
+    majCompteurs(); // ✅ met à jour le badge
+    alert("✅ " + nom + " ajouté au panier !");
+  }
+
+  // ❤️ Quand on ajoute un produit aux favoris
+  function ajouterAuxFavoris(nom, prix) {
+    let favoris = JSON.parse(localStorage.getItem("favoris")) || [];
+    const existe = favoris.find(item => item.nom === nom);
+
+    if (!existe) {
+      favoris.push({ nom, prix });
+      localStorage.setItem("favoris", JSON.stringify(favoris));
+      majCompteurs(); // ✅ met à jour le badge
+      alert("❤️ " + nom + " ajouté aux favoris !");
+    } else {
+      alert("⚠️ Ce produit est déjà dans vos favoris !");
+    }
+  }
+</script>
+
+</body>
+</html>

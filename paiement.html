@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paiement - Chitir Chicken</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --orange-1: #ff9500;
+      --orange-2: #ff3b30;
+      --card-bg: rgba(255,255,255,0.95);
+    }
+    body{
+      font-family: "Poppins", sans-serif;
+      background-image: url('images/back.png');
+      background-size: cover;
+      background-position: center;
+      margin:0;
+      color:#111;
+    }
+    header{
+      background: linear-gradient(90deg,var(--orange-1),var(--orange-2));
+      color: white;
+    }
+    .hero-bg{ position:relative; min-height:100vh; }
+    .hero-overlay{ position:absolute; inset:0; background:rgba(0,0,0,0.55); }
+    .card { background: var(--card-bg); border-radius: 24px; padding: 28px; box-shadow: 0 16px 40px rgba(0,0,0,0.45); }
+    .btn-style { background: linear-gradient(135deg, var(--orange-2), var(--orange-1)); color: #fff; padding: 12px 22px; border-radius: 9999px; font-weight:700; border:none; cursor:pointer; box-shadow:0 8px 25px rgba(255,69,0,0.28); }
+    .btn-style:hover{ transform: translateY(-3px); }
+    select,input,textarea{ border:1px solid #e5e7eb; border-radius:8px; padding:10px 12px; width:100%; }
+    #info-paiement { display:none; margin-top:16px; text-align:center; }
+    #qr-image{ display:none; margin:12px auto 0; width:220px; height:220px; border-radius:14px; border:4px solid rgba(255,149,0,0.15); box-shadow:0 12px 30px rgba(0,0,0,0.25); }
+    .paid-btn { display:none; position:fixed; right:22px; bottom:22px; z-index:60; padding:14px 18px; border-radius:9999px; background: linear-gradient(135deg,var(--orange-2),var(--orange-1)); color:white; font-weight:800; box-shadow:0 10px 30px rgba(255,69,0,0.25); cursor:pointer; }
+    .modal-overlay{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; z-index:80; }
+    .modal { width:100%; max-width:520px; background:white; border-radius:18px; padding:24px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.45); }
+    .success-check { width:96px; height:96px; margin:0 auto 16px; border-radius:50%; background:linear-gradient(135deg,var(--orange-1),var(--orange-2)); display:flex;align-items:center;justify-content:center;color:#fff;font-size:42px; box-shadow:0 12px 30px rgba(255,149,0,0.25); }
+    .fun-anim { display:flex;flex-direction:column;align-items:center; gap:12px; padding:18px; }
+    .confetti { width:14px;height:14px;border-radius:4px; animation:pop 900ms infinite; }
+    @keyframes pop { 0%{ transform:translateY(0) rotate(0) scale(1); opacity:1; } 50%{ transform:translateY(-18px) rotate(18deg) scale(1.2); opacity:0.9;} 100%{ transform:translateY(0) rotate(36deg) scale(1); opacity:1;} }
+    .fun-text { font-weight:800; font-size:18px; color:#111; }
+    #tx-ref { margin-top: 12px; }
+    /* failure modal style */
+    .modal-error .title { color: #fff; font-weight:800; }
+    .modal-error .modal { background: linear-gradient(135deg,#ff3b30,#ff9500); color: white; }
+    @media (max-width:640px){ .card{ padding:20px; border-radius:14px; } #qr-image{ width:180px; height:180px; } }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="backdrop-blur-md shadow-md fixed w-full top-0 z-40">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <img src="images/logo.png" alt="logo" class="h-12 w-12">
+        <div class="text-white font-extrabold text-xl">Chitir Chicken</div>
+      </div>
+      <nav>
+        <ul class="flex gap-6 text-white font-semibold">
+          <li><a href="index.html" class="hover:opacity-90">Accueil</a></li>
+          <li><a href="panier.html" class="hover:opacity-90">Panier</a></li>
+          <li><a href="favoris.html" class="hover:opacity-90">Favoris</a></li>
+          <li><a href="localisation.html" class="hover:opacity-90">Localisation</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="hero-bg pt-28 min-h-screen">
+    <div class="hero-overlay"></div>
+    <div class="container mx-auto px-6 py-12 relative z-10">
+      <div class="max-w-2xl mx-auto card">
+        <h1 class="text-3xl font-extrabold text-center text-orange-600 mb-4">Finaliser votre commande</h1>
+        <p class="text-center text-gray-600 mb-6">Remplissez vos informations, choisissez un mode de paiement — puis scannez ou suivez les instructions. Vous devez fournir la référence de paiement pour confirmer.</p>
+
+        <!-- Form -->
+        <form id="commande-form" onsubmit="return false;">
+          <div class="mb-4">
+            <label class="block font-semibold mb-1">Nom complet</label>
+            <input id="nom" type="text" placeholder="Ex : Ibrahim Ouédraogo" required>
+          </div>
+
+          <div class="mb-4">
+            <label class="block font-semibold mb-1">Numéro de téléphone</label>
+            <input id="tel" type="tel" placeholder="+226..." required>
+          </div>
+
+          <div class="mb-4">
+            <label class="block font-semibold mb-1">Adresse de livraison</label>
+            <textarea id="adr" rows="3" placeholder="Ouaga 2000, Kamsonghin..." required></textarea>
+          </div>
+
+          <div class="mb-2">
+            <label class="block font-semibold mb-1">Mode de paiement</label>
+            <select id="mode-paiement">
+              <option value="">-- Choisir un mode --</option>
+              <option value="orange">📱 Orange Money (77 77 77 90)</option>
+              <option value="moov">💰 Moov Money (56 75 91 91)</option>
+              <option value="maxit">🟢 Max It (QR Pay)</option>
+            </select>
+          </div>
+
+          <!-- Info zone -->
+          <div id="info-paiement" class="mt-4 text-center">
+            <p id="texte-paiement" class="font-semibold text-gray-800"></p>
+            <img id="qr-image" alt="QR Paiement">
+            <p id="num-info" class="text-sm text-gray-500 mt-3"></p>
+
+            <!-- Référence de paiement (obligatoire pour confirmer) -->
+            <div id="tx-area" style="display:none; margin-top:12px;">
+              <label class="block text-sm font-semibold mb-2">Référence / Code de transaction</label>
+              <input id="tx-ref" type="text" placeholder="Entrez la référence reçue après votre paiement (ex: 12345678)">
+              <p class="text-xs text-gray-500 mt-2">Après le paiement (sur Orange/Moov ou après scan Max It) copiez-collez ici la référence reçue pour confirmer.</p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- floating "J'ai payé" button -->
+  <button id="paidBtn" class="paid-btn">✅ J'ai payé</button>
+
+  <!-- SUCCESS MODAL -->
+  <div id="modal-success" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="success-check">✓</div>
+      <h2 class="text-2xl font-extrabold mb-2">Paiement réussi</h2>
+      <p class="text-gray-600 mb-4">Votre paiement a été effectué avec succès. Merci pour votre commande !</p>
+      <div style="display:flex;justify-content:center; gap:12px;">
+        <button class="btn-style" onclick="fermerSuccess()">Super 🎉</button>
+        <button style="background:#e5e7eb;color:#111;padding:10px 14px;border-radius:10px;font-weight:700;" onclick="allerAccueil()">Accueil</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUN POPUP (après le success) -->
+  <div id="modal-fun" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal fun-anim">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+        <div class="confetti" style="background:#FF3B30; animation-delay:0ms;"></div>
+        <div class="confetti" style="background:#FF9500; animation-delay:120ms;"></div>
+        <div class="confetti" style="background:#FFD166; animation-delay:240ms;"></div>
+        <div class="confetti" style="background:#06D6A0; animation-delay:360ms;"></div>
+        <div class="confetti" style="background:#4CC9F0; animation-delay:480ms;"></div>
+      </div>
+
+      <div class="fun-text">Oh la la — tu viens de faire le meilleur choix ! 🎉</div>
+      <div class="text-gray-600">On prépare ton festin — reste prêt, le livreur arrive vite.</div>
+      <div style="margin-top:12px;">
+        <button class="btn-style" onclick="fermerFun()">Ok, je suis prêt 🍗</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ERROR MODAL (paiement non effectué) -->
+  <div id="modal-error" class="modal-overlay modal-error" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div style="width:96px;height:96px;margin:0 auto 12px;border-radius:50%;background:#7f1d1d;display:flex;align-items:center;justify-content:center;color:#fff;font-size:36px;box-shadow:0 12px 30px rgba(0,0,0,0.25);">!</div>
+      <h2 class="text-2xl font-extrabold mb-2" style="color:white;">Paiement non effectué</h2>
+      <p class="text-white mb-4">Nous n'avons pas détecté de preuve de paiement. Veuillez effectuer le paiement puis saisir la référence avant de confirmer.</p>
+      <div style="display:flex;justify-content:center; gap:12px;">
+        <button class="btn-style" onclick="fermerError()">Ok, je vais payer</button>
+        <button style="background:#f3f4f6;color:#111;padding:10px 14px;border-radius:10px;font-weight:700;" onclick="allerPanier()">Retour panier</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const modeSelect = document.getElementById('mode-paiement');
+  const infoZone = document.getElementById('info-paiement');
+  const textePaiement = document.getElementById('texte-paiement');
+  const qrImage = document.getElementById('qr-image');
+  const numInfo = document.getElementById('num-info');
+  const paidBtn = document.getElementById('paidBtn');
+  const txArea = document.getElementById('tx-area');
+  const txRefInput = document.getElementById('tx-ref');
+  const modalSuccess = document.getElementById('modal-success');
+  const modalFun = document.getElementById('modal-fun');
+  const modalError = document.getElementById('modal-error');
+
+  const ORANGE_NUM = "77 77 77 90";
+  const MOOV_NUM = "56 75 91 91";
+
+  modeSelect.addEventListener('change', () => {
+    const mode = modeSelect.value;
+    infoZone.style.display = 'none';
+    qrImage.style.display = 'none';
+    numInfo.textContent = '';
+    txArea.style.display = 'none';
+    txRefInput.value = '';
+    paidBtn.style.display = 'none';
+
+    if (!mode) return;
+
+    // ensure user filled personal info first
+    const nom = document.getElementById('nom').value.trim();
+    const tel = document.getElementById('tel').value.trim();
+    const adr = document.getElementById('adr').value.trim();
+    if (!nom || !tel || !adr) {
+      alert("Remplissez d'abord votre nom, téléphone et adresse avant de choisir le mode de paiement.");
+      modeSelect.value = "";
+      return;
+    }
+
+    infoZone.style.display = 'block';
+    paidBtn.style.display = 'inline-flex';
+    txArea.style.display = 'block'; // always ask for reference (required to confirm)
+
+    if (mode === 'orange') {
+      textePaiement.innerHTML = "Orange Money — suivez ces instructions pour payer :";
+      numInfo.textContent = `Numéro Chitir (réception) : ${ORANGE_NUM}`;
+      qrImage.style.display = 'none';
+    } else if (mode === 'moov') {
+      textePaiement.innerHTML = "Moov Money — suivez ces instructions pour payer :";
+      numInfo.textContent = `Numéro Chitir (réception) : ${MOOV_NUM}`;
+      qrImage.style.display = 'none';
+    } else if (mode === 'maxit') {
+      textePaiement.innerHTML = "Max It — scannez le QR ci-dessous depuis l'application pour payer :";
+      numInfo.textContent = "";
+      const qrText = `MaxIt|ChitirChicken|${Date.now()}`; // demo QR text
+      qrImage.src = `https://chart.googleapis.com/chart?cht=qr&chs=400x400&chl=${encodeURIComponent(qrText)}`;
+      qrImage.style.display = 'block';
+    }
+  });
+
+  // click "J'ai payé"
+  paidBtn.addEventListener('click', () => {
+    const mode = modeSelect.value;
+    if (!mode) { alert("Choisissez d'abord un mode de paiement."); return; }
+
+    const tx = txRefInput.value.trim();
+    if (!tx) {
+      // preuve non fournie -> show error modal
+      modalError.style.display = 'flex';
+      return;
+    }
+
+    // ici on suppose que la référence est suffisante (en prod, vérifier via serveur)
+    modalSuccess.style.display = 'flex';
+    setTimeout(() => { modalFun.style.display = 'flex'; }, 1300);
+
+    // Optionnel : vider le panier localStorage (décommente si souhaité)
+    // localStorage.removeItem('panier');
+  });
+
+  function fermerSuccess(){ modalSuccess.style.display = 'none'; }
+  function fermerFun(){ modalFun.style.display = 'none'; window.location.href = "index.html"; }
+  function fermerError(){ modalError.style.display = 'none'; }
+  function allerAccueil(){ window.location.href = "index.html"; }
+  function allerPanier(){ window.location.href = "panier.html"; }
+
+  // fermer modals si clic en dehors
+  [modalSuccess, modalFun, modalError].forEach(mod => {
+    mod.addEventListener('click', (e) => { if (e.target === mod) mod.style.display = 'none'; });
+  });
+</script>
+
+</body>
+</html>
