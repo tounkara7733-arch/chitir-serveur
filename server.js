@@ -19,3 +19,12 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Serveur lancé sur http://localhost:${PORT}`);
 });
+import express from "express";
+const app = express();
+
+// ✅ Sert les fichiers HTML, CSS et images du dossier courant
+app.use(express.static(__dirname));
+
+app.listen(3000, () => {
+  console.log("Serveur en cours d’exécution sur http://localhost:3000");
+});
